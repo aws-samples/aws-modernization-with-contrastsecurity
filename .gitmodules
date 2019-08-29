@@ -1,0 +1,9 @@
+[submodule "cfn/vpc-with-cloud9"]
+	path = cfn/vpc-with-cloud9
+	url = git@github.com:jamesbland123/vpc-with-cloud9.git
+[submodule "themes/learn"]
+	path = themes/learn
+	url = git@github.com:jamesbland123/hugo-theme-learn.git
+[submodule "app"]
+	path = app
+	url = git@github.com:jamesbland123/agoncal-application-petstore-ee7.git
