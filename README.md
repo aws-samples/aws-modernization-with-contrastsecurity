@@ -1,34 +1,11 @@
 
 
-# AWS DevSecOps Modernization Workshop
+# Workshop Sample
 
-In this workshop, you will learn how to add security testing to a CI/CD pipeline of a dockerized .net (Unicorn Store) application using AWS CodeCommit, AWS CodeBuild, and AWS CodePipeline. The modules contained in this workshop will provide you with step-by-step instructions for committing, building, testing, and deploying software in an automation fashion. You will also learn about some basic security tests and where to instrument them in the software development lifecycle. 
+This is a workshop building sample repo.  The contents in this repo is meant to serve as a sample that can be modified to create a custom 
+workshop that utilizes AWS services.
 
-## Generating the workshop static site pages with Hugo
+> This README.md is created only as a place holder. Create or modify this README with information about the workshop in the event someone lands on this repo.  
+> Tip: include a link to the permanent home of the workshop content.
 
-### Install Hugo
-
-macOS: `brew install hugo`
-
-Windows: `choco install hugo -confirm`
-
-Visit https://gohugo.io/getting-started/installing/ for detailed instructions.
-
-
-### Clone this repo
-
-`git clone https://github.com/jamesbland123/modernization-devsecops-workshop.git`
-
-### Install node packages
-
-`cd modernization-devsecops-workshop`
-
-`npm install`
-
-### Run Hugo locally
-
-`npm run server`
-
-### View site locally
-
-Visit http://localhost:1313/ to see the site.
+When you are ready, let's get building [Getting Started](GETTING_STARTED.md)
