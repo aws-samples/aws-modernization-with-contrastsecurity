@@ -3,6 +3,7 @@
   - [Introduction](#introduction)
   - [Purpose of a Workshop](#purpose-of-a-workshop)
   - [High Level Overview of Building a Workshop](#high-level-overview-of-building-a-workshop)
+  - [Getting a Feel of a Workshop](#getting-a-feel-of-a-workshop)
   - [Available Building Blocks](#available-building-blocks)
     - [Sample Repo](#sample-repo)
     - [Documentation](#documentation)
@@ -29,6 +30,9 @@ The overall purpose of a workshop is to educate users about how to use your prod
 * Change/Add/Remove content to create the workshop.
 * Test the workshop.  Have several people go through the workshop to make sure all instructions, artifacts, etcetera are included and working.  
 * Publish the workshop.  The workshop repo will be published at GitHub under aws-samples.  The name of the repo will vary based on the content of the workshop. Static HTML files will be stored in an S3 bucket with a DNS name pointing to the site.  When all is said and done you will have a name such as myworkshop.awsworkshop.io pointing to your workshop and an aws-samples repo hosted on GitHub.
+
+## Getting a Feel of a Workshop
+Go through the example in this sample repo, included is a working example of a workshop and flow.  Follow the directions below to clone the repo, run hugo, and view the example content.  
 
 ## Available Building Blocks
 
@@ -67,6 +71,8 @@ Hugo uses the content stored in `content` to build web pages.  If you look under
 * If you want to create a new page between 10 and 20 you can use any number in the name as long as it's sequentially between 10 and 20.  Don't forget to appropriately set the weight in the top section.
 * Use special tags such as {{% notice warning %}} {{% /notice %}} and {{% notice note %}} {{% /notice %}}. These are not markdown, but templates within Hugo to add CSS styling.
 * Place all images in {repo_root}/static/images.  There are several examples of using images in the sample content.
+* Provide users with sample output in `<pre> </pre>` tags so that the copy to clipboard function is not there.  No reason to copy example output to the clipboard.
+* DO NOT assume that the user has any expose to AWS or your product.  Everything needs to be explained and all command or areas in the UI you want the user to go to needs to be provided.  Screen shots or examples work well for this, especially on busy UI's.  
 
 ### CloudFormation Stacks & Templates
 In `/cfn` there is a directory pulled from a submodule called `vpc-with-cloud9`.  This stack template and nested stacks are publically available for usage in your workshop.  They are included here so you can see what resources are in the stacks and what resources are exported.  The template creates a basic VPC and cloud9 instance for the workshop.  
@@ -98,3 +104,8 @@ A. When conducting workshops it is often difficult to determine the state of the
 Q. **Can I change the License**
 
 A. We rather you not.  The site will be posted at aws-samples and the license included in the sample is MIT, which is meant to be simple and open source friendly.  
+
+Q. **What if I don't want to use other tools, such as Jenkins or Terraform as examples?**
+
+A.  Great. We actually encourage you to use other tools and services as you may expect customers to use this in their environment.  Note that if you choose to use additional or alternative tools that it's easy for the end user to follow and does not detract from your main message.  As an example, if your main message is application security scanning, does it make a difference whether you use Jenkins or CodeBuild, or does the usage of one or the other add unnecessary complexity that has nothing to do with your message?  So don't reinvent the wheel and if there is already an example of instrumenting testing in CodeBuild, I would use that as the tool has nothing to do with your message.  But if your main message is instrumenting security scanning on Jenkins, then yes, use Jenkins.
+
