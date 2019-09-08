@@ -34,4 +34,4 @@ To test, run the following query and copy the URL you obtain from the output int
 aws elbv2 describe-load-balancers --names="Modernization-Workshop-LB" --query="LoadBalancers[0].DNSName" --output=text
 ```
 
-![Unicorn Store Image](/images/unicornstore.png)
+![Java Pet Store](/images/java-app.png)

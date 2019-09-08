@@ -34,9 +34,9 @@ A mature CI/CD practice has the option of implementing continuous deployment whe
 
 To deploy the pipeline, run the following commands in Cloud9's terminal 
 ```bash
-aws cloudformation create-stack --stack-name UnicornPipeline --template-body file://unicorn-store-pipeline.yaml --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation create-stack --stack-name WorkshopPipeline --template-body file://pipeline.yaml --capabilities CAPABILITY_NAMED_IAM
 
-until [[ `aws cloudformation describe-stacks --stack-name "UnicornPipeline" --query "Stacks[0].[StackStatus]" --output text` == "CREATE_COMPLETE" ]]; do  echo "The stack is NOT in a state of CREATE_COMPLETE at `date`";   sleep 30; done && echo "The Stack is built at `date` - Please proceed"
+until [[ `aws cloudformation describe-stacks --stack-name "WorkshopPipeline" --query "Stacks[0].[StackStatus]" --output text` == "CREATE_COMPLETE" ]]; do  echo "The stack is NOT in a state of CREATE_COMPLETE at `date`";   sleep 30; done && echo "The Stack is built at `date` - Please proceed"
 ```
 
 {{% notice info %}}
@@ -49,6 +49,6 @@ The stack is NOT in a state of CREATE_COMPLETE at Sun Aug  4 05:46:58 UTC 2019
 The Stack is built at Sun Aug  4 05:47:29 UTC 2019 - Please proceed
 </pre>
 
-At this point you should have a fully functioning CI/CD CodePipeline.  If you head over to CodePipeline in the AWS console and click on the pipeline that begins with the name **UnicorePipeline-Pipeline** you will see a similar screen to the one below.  The image below is currently in the Deploy stage of the pipeline.
+At this point you should have a fully functioning CI/CD CodePipeline.  If you head over to CodePipeline in the AWS console and click on the pipeline that begins with the name **WorkshopPipeline-Pipeline** you will see a similar screen to the one below.  The image below is currently in the Deploy stage of the pipeline.
 
 ![CodePipeline View](/images/pipeline-view.png)
