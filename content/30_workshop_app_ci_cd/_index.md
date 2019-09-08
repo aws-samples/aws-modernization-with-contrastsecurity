@@ -1,9 +1,9 @@
 +++
-title = "Unicorn Store CI/CD"
+title = "Workshop App with CI/CD"
 chapter = true
 weight = 30
 +++
 
-# Unicorn Store CI/CD
+# Workshop App with CI/CD
 
 {{% children showhidden="false" %}}

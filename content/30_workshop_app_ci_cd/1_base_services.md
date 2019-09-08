@@ -10,7 +10,7 @@ Up until now, we have been going through various steps to setup our environment.
 
 ### Basic Services CloudFormation Stack
 
-We are going to setup some basic services such as an Amazon RDS Database, secrets in AWS Secrets Manager, AWS CodeCommit, and Amazon ECR services.  
+We are going to setup some basic services such as an AWS CodeCommit and Amazon ECR services.  
 
 {{% notice info %}}
 This step takes approximately 15 minutes 
@@ -18,11 +18,11 @@ This step takes approximately 15 minutes
 
 Copy and paste the following into Cloud9's terminal to launch a CloudFormation stack
 ```bash
-cd ~/environment/modernization-devsecops-workshop/cfn
+cd ~/environment/modernization-workshop/modules/30_workshop_app
 
-aws cloudformation create-stack --stack-name UnicornStoreServices --template-body file://unicorn-store-services.yaml --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation create-stack --stack-name WorkshopServices --template-body file://services.yaml --capabilities CAPABILITY_NAMED_IAM
 
-until [[ `aws cloudformation describe-stacks --stack-name "UnicornStoreServices" --query "Stacks[0].[StackStatus]" --output text` == "CREATE_COMPLETE" ]]; do  echo "The stack is NOT in a state of CREATE_COMPLETE at `date`";   sleep 30; done && echo "The Stack is built at `date` - Please proceed"
+until [[ `aws cloudformation describe-stacks --stack-name "WorkshopServices" --query "Stacks[0].[StackStatus]" --output text` == "CREATE_COMPLETE" ]]; do  echo "The stack is NOT in a state of CREATE_COMPLETE at `date`";   sleep 30; done && echo "The Stack is built at `date` - Please proceed"
 ```
 
 The output should look like the window below

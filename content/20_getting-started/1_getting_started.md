@@ -38,7 +38,7 @@ git clone https://github.com/jamesbland123/workshop-sample modernization-worksho
 
 ### Increase AWS Cloud9 disk/storage
 ```bash
-cd ~/environment/modernization-workshop/modules/10_getting_started
+cd ~/environment/modernization-workshop/modules/20_getting_started
 ./resize.sh 50
 ```
 
@@ -55,19 +55,7 @@ Next, lets source .bashrc to add .net PATH to our current working environment
 . ~/.bashrc
 ```
 
-{{% notice info %}}
-The last few lines of the output will look similar to the below window
-{{% /notice %}}
 
-<pre>
-Deleted: sha256:84e9cc454dd9325a12774267998ebb5adca00dd5907c73b447fd3437611209d0
-Deleted: sha256:c8462350bd81d6d8264a9e682949efe0c650f1a3a6800ceccf335e70bbcdf1f9
-Deleted: sha256:0c5fd0b1e438aa8d08d6ca8e0bcf1121e897987d1b24495467cb18b1d9104e19
-Deleted: sha256:88e3926a38f1a1d6e57eadbfc2cbcc27f46d954b58e9dfc902e05879cd8f99b9
-xxxyyy_user:~/environment/modernization-devsecops-workshop/scripts (master) $ . ~/.bashrc
-function
-xxxyyy_user:~/environment/modernization-devsecops-workshop/scripts (master) $ 
-</pre>
 
 
 
