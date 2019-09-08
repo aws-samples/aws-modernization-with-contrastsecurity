@@ -110,8 +110,8 @@ Resources:
     Properties:
       GroupId: !Ref TaskSecurityGroup
       IpProtocol: tcp
-      FromPort: 80
-      ToPort: 80
+      FromPort: 8080
+      ToPort: 8080
       SourceSecurityGroupId: !Ref LBSecurityGroup     
   
   FargateService:
@@ -132,7 +132,7 @@ Resources:
             - Fn::ImportValue: !Sub "${VPCstack}:PublicSubnet2"
       LoadBalancers:
         - ContainerName: modernization-workshop
-          ContainerPort: 80
+          ContainerPort: 8080
           TargetGroupArn: !Ref TargetGroup
       ServiceName: ModernService
       
@@ -141,6 +141,10 @@ Resources:
     Properties:
       GroupName: LbSecurityGroup
       GroupDescription: Security group the the Modernization Workshop Application Load Balancer
+      SecurityGroupEgress:
+       - IpProtocol: 'tcp'
+         FromPort: '8080'
+         ToPort: '8080'
       SecurityGroupIngress:
         - CidrIp: "0.0.0.0/0"
           IpProtocol: "TCP"
@@ -182,7 +186,7 @@ Resources:
       Name: ecs-modernization-service
       VpcId: 
         Fn::ImportValue: !Sub "${VPCstack}:VPCId"
-      Port: 80
+      Port: 8080
       Protocol: HTTP
       HealthCheckIntervalSeconds: 10
       HealthCheckPath: /health
