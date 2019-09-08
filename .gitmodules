@@ -1,9 +1,9 @@
 [submodule "cfn/vpc-with-cloud9"]
 	path = cfn/vpc-with-cloud9
-	url = git@github.com:jamesbland123/vpc-with-cloud9.git
+	url = https://github.com/jamesbland123/vpc-with-cloud9.git
 [submodule "themes/learn"]
 	path = themes/learn
-	url = git@github.com:jamesbland123/hugo-theme-learn.git
+	url = https://github.com/jamesbland123/hugo-theme-learn.git
 [submodule "java-app"]
 	path = java-app
-	url = git@github.com:jamesbland123/java-petstore-app.git
+	url = https://github.com/jamesbland123/java-petstore-app.git
