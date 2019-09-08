@@ -1,15 +1,15 @@
 ---
-title: "AWS Modernization DevSecOps Workshop"
+title: "AWS Modernization Workshop Sample"
 chapter: true
 weight: 1
 ---
 
-# AWS Modernization DevSecOps Workshop
+# AWS Modernization Workshop Sample
 
 ### Welcome
 
 <p style='text-align: left;'>
-    In this workshop, you will learn how to add security testing to a CI/CD pipeline of a dockerized .net (Unicorn Store) application using AWS CodeCommit, AWS CodeBuild, and AWS CodePipeline. The modules contained in this workshop will provide you with step-by-step instructions for committing, building, testing, and deploying software in an automation fashion. You will also learn about some basic security tests and where to instrument them in the software development lifecycle. 
+    In this workshop, you will learn how to add security testing to a CI/CD pipeline of a dockerized application using AWS CodeCommit, AWS CodeBuild, and AWS CodePipeline. The modules contained in this workshop will provide you with step-by-step instructions for committing, building, testing, and deploying software in an automation fashion. You will also learn about some basic security tests and where to instrument them in the software development lifecycle. 
 </p>
 
 ### Objectives
