@@ -142,9 +142,10 @@ Resources:
       GroupName: LbSecurityGroup
       GroupDescription: Security group the the Modernization Workshop Application Load Balancer
       SecurityGroupEgress:
-       - IpProtocol: 'tcp'
-         FromPort: '8080'
-         ToPort: '8080'
+        - CidrIP: "0.0.0.0/0"
+          IpProtocol: 'tcp'
+          FromPort: '8080'
+          ToPort: '8080'
       SecurityGroupIngress:
         - CidrIp: "0.0.0.0/0"
           IpProtocol: "TCP"
