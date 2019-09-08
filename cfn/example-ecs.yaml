@@ -1,32 +1,27 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: This template will launch an ECS service with lb for .Net Modernization Workshop.
+Description: This template will launch an ECS service (Fargate) for the Modernization Workshop.
 
 Parameters:
   VPCstack:
     Type: String
     Description: VPC stack to import values from
     Default: ModernizationVPC
-
-  RDSsecrets:
-    Type: String
-    Description: RDS information such as username and password arn to secret manager
-    Default: UnicornStoreServices
     
   DesiredCount:
     Type: Number
     Default: 1    
 
 Resources:
-  UnicornStoreCloudwatchLogGroup:
+  CloudwatchLogGroup:
     Type: "AWS::Logs::LogGroup"
     Properties:
-      LogGroupName: UnicornStore
+      LogGroupName: ModernizationWorkshop
       RetentionInDays: 30      
 
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
-      ClusterName: UnicornStoreCluster
+      ClusterName: ModernizationCluster
 
   TaskExecutionRole:
     Type: AWS::IAM::Role
@@ -41,26 +36,13 @@ Resources:
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
         - "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
-        - "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-      Policies:
-        -
-          PolicyName: RetrieveUnicornSecret
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-             - Effect: Allow
-               Action:
-               - secretsmanager:GetSecretValue
-               Resource:
-                 - Fn::ImportValue: !Sub "${RDSsecrets}:DBSecret" 
-                 - Fn::ImportValue: !Sub "${RDSsecrets}:AdminPasswordSecret" 
-                 - Fn::ImportValue: !Sub "${RDSsecrets}:AdminUsernameSecret"          
-      RoleName: "UnicornStoreExecutionRole"
+        - "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"         
+      RoleName: "FargateExecutionRole"
       
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: "modernization-unicorn"
+      Family: "modernization-workshop"
       Memory: "2 gb"
       Cpu: "1 vcpu"
       NetworkMode: "awsvpc"
@@ -68,38 +50,58 @@ Resources:
       RequiresCompatibilities: 
         - "FARGATE"
       ContainerDefinitions:
-        - Name: modernization-devsecops-workshop_unicornstore
-          Image: 
-            !Sub '${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/modernization-devsecops-workshop:latest'
+        - Name: postgres
+          Image: postgres:9.6
           Cpu: 512
           Memory: 1024
           PortMappings:
-            - ContainerPort: 80
+            - ContainerPort: 5432
           Environment:
-            - Name: ASPNETCORE_ENVIRONMENT
-              Value: Production
-          Secrets: 
-            - Name: UNICORNSTORE_DBSECRET
-              ValueFrom: 
-                Fn::ImportValue: !Sub "${RDSsecrets}:DBSecret"
-            - Name: DefaultAdminUsername
-              ValueFrom: 
-                Fn::ImportValue: !Sub "${RDSsecrets}:AdminUsernameSecret"
-            - Name: DefaultAdminPassword
-              ValueFrom: 
-                Fn::ImportValue: !Sub "${RDSsecrets}:AdminPasswordSecret"
+            - Name: POSTGRES_DB
+              Value: petstore
+            - Name: POSTGRES_USER
+              Value: admin
+            - Name: POSTGRES_PASSWORD
+              Value: password
           LogConfiguration:
             LogDriver: awslogs
             Options:
               awslogs-region: !Ref AWS::Region
-              awslogs-group: UnicornStore
+              awslogs-group: !Ref CloudwatchLogGroup
+              awslogs-stream-prefix: "postgres"
+        - Name: modernization-workshop
+          Image: 
+            !Sub '${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/modernization-workshop:latest'
+          Cpu: 512
+          Memory: 1024
+          PortMappings:
+            - ContainerPort: 8080
+          Environment:
+            - Name: DB_HOST
+              Value: 127.0.0.1
+            - Name: DB_NAME
+              Value: petstore
+            - Name: DB_PASS
+              Value: password
+            - Name: DB_PORT
+              Value: 5432
+            - Name: DB_URL
+              Value: jdbc:postgresql://127.0.0.1:5432/petstore?ApplicationName=applicationPetstore
+            - Name: DB_USER
+              Value: admin          
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref AWS::Region
+              awslogs-group: !Ref CloudwatchLogGroup
               awslogs-stream-prefix: "web"
+
   
   TaskSecurityGroup:
     Type: "AWS::EC2::SecurityGroup"
     Properties:
       GroupName: UnicornStoreTaskSecurityGroup
-      GroupDescription: Security group the the Unicornstore Fargate Task
+      GroupDescription: Security group for the Modernization Workshop Fargate Task
       VpcId: 
         Fn::ImportValue: !Sub "${VPCstack}:VPCId"
   
@@ -129,16 +131,16 @@ Resources:
             - Fn::ImportValue: !Sub "${VPCstack}:PublicSubnet1"
             - Fn::ImportValue: !Sub "${VPCstack}:PublicSubnet2"
       LoadBalancers:
-        - ContainerName: modernization-devsecops-workshop_unicornstore
+        - ContainerName: modernization-workshop
           ContainerPort: 80
           TargetGroupArn: !Ref TargetGroup
-      ServiceName: Unicorn-FargateService
+      ServiceName: ModernService
       
   LBSecurityGroup:
     Type: "AWS::EC2::SecurityGroup"
     Properties:
-      GroupName: UnicornStoreLbSecurityGroup
-      GroupDescription: Security group the the Unicornstore Application Load Balancer
+      GroupName: LbSecurityGroup
+      GroupDescription: Security group the the Modernization Workshop Application Load Balancer
       SecurityGroupIngress:
         - CidrIp: "0.0.0.0/0"
           IpProtocol: "TCP"
@@ -150,7 +152,7 @@ Resources:
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: UnicornStore-LB
+      Name: Modernization-Workshop-LB
       Scheme: internet-facing
       SecurityGroups:
         - !Ref LBSecurityGroup
@@ -159,7 +161,7 @@ Resources:
         - Fn::ImportValue: !Sub "${VPCstack}:PublicSubnet2"
       Tags:
         - Key: Name
-          Value: UnicornStore-LB
+          Value: Modernization-Workshop-LB
       Type: application
       IpAddressType: ipv4
 
@@ -177,7 +179,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     DependsOn: LoadBalancer
     Properties:
-      Name: ecs-UnicornStore-Service
+      Name: ecs-modernization-service
       VpcId: 
         Fn::ImportValue: !Sub "${VPCstack}:VPCId"
       Port: 80
