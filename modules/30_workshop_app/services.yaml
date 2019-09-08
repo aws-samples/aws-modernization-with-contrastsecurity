@@ -3,7 +3,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: This template will launch various core services such as CodeCommit & ECR for Modernization Workshop.
 
 Resources:
-  Code_Repo:
+  CodeRepo:
     Type: AWS::CodeCommit::Repository
     Properties:
       RepositoryName: modernization-workshop
@@ -17,7 +17,7 @@ Resources:
 Outputs: 
   CodeRepoURL:
     Description: URL for code commit repo
-    Value: !GetAtt Code_Repo.CloneUrlHttp
+    Value: !GetAtt CodeRepo.CloneUrlHttp
     Export:
       Name: WorkShopServices:CodeRepoURL
   
