@@ -13,7 +13,7 @@ Up until now, we have been going through various steps to setup our environment.
 We are going to setup some basic services such as an AWS CodeCommit and Amazon ECR services.  
 
 {{% notice info %}}
-This step takes approximately 15 minutes 
+This step takes approximately 2 minutes 
 {{% /notice %}}
 
 Copy and paste the following into Cloud9's terminal to launch a CloudFormation stack

@@ -36,7 +36,7 @@ Now it's time to compile and package your code.  Copy and paste the below code i
 
 ```bash
 cd ~/environment/modernization-workshop/app
-docker-compose build
+docker build -t modernization-workshop .
 
 docker tag modernization-workshop:latest $(aws ecr describe-repositories --repository-name modernization-workshop --query=repositories[0].repositoryUri --output=text):latest
 
