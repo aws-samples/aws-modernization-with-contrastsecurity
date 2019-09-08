@@ -33,12 +33,12 @@ Now we want to clone the repository that contains all the content and files you 
 
 ```bash
 cd ~/environment && \
-git clone https://github.com/jamesbland123/modernization-devsecops-workshop.git
+git clone https://github.com/jamesbland123/workshop-sample modernization-workshop
 ```
 
 ### Increase AWS Cloud9 disk/storage
 ```bash
-cd ~/environment/modernization-devsecops-workshop/scripts
+cd ~/environment/modernization-workshop/modules/10_getting_started
 ./resize.sh 50
 ```
 
