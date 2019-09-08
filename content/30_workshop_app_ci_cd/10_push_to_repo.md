@@ -1,24 +1,24 @@
 +++
-title = "Push to Repo"
+title = "Build & Push to Repo"
 chapter = false
 weight = 10
 +++
 
-### Push to AWS CodeCommit
+### Build & Push to AWS CodeCommit
 We should now be ready to push our application to the AWS CodeCommit repo and the Amazon Elastic Container Repository
 
-The following sets a new origin for the application repo to CodeCommit unicorn-store, configures a credential helper needed for CodeCommit, and pushes the source code to the repo.  This step is necessary for an automated pipeline as CodeBuild will build the Unicorn Store application directly from this repo.
+The following sets a new origin for the application repo to CodeCommit unicorn-store, configures a credential helper needed for CodeCommit, and pushes the source code to the repo.  This step is necessary for an automated pipeline as CodeBuild will build the application directly from this repo.
 
 ```bash
-cd ~/environment/modernization-devsecops-workshop/
-git remote set-url origin https://git-codecommit.us-west-2.amazonaws.com/v1/repos/unicorn-store
+cd ~/environment/modernization-workshop/
+git remote set-url origin https://git-codecommit.us-west-2.amazonaws.com/v1/repos/modernization-workshop
 git config --global credential.helper '!aws codecommit credential-helper $@'
 git config --global credential.UseHttpPath true
 git push origin master
 ```
 
 {{% notice info %}}
-If successfully, you should see the message as below.
+If successfully, you should see a similar message to the one below.
 {{% /notice %}}
 
 <pre>
@@ -27,7 +27,7 @@ Compressing objects: 100% (5900/5900), done.
 Writing objects: 100% (9525/9525), 33.75 MiB | 2.65 MiB/s, done.
 Total 9525 (delta 3240), reused 9525 (delta 3240)
 remote: processing 
-To https://git-codecommit.us-west-2.amazonaws.com/v1/repos/unicorn-store
+To https://git-codecommit.us-west-2.amazonaws.com/v1/repos/modernization-workshop
  * [new branch]      master -> master
 </pre>
 
@@ -35,14 +35,14 @@ To https://git-codecommit.us-west-2.amazonaws.com/v1/repos/unicorn-store
 Now it's time to compile and package your code.  Copy and paste the below code into Cloud9's terminal window
 
 ```bash
-cd ~/environment/modernization-devsecops-workshop/
-docker-compose build 
+cd ~/environment/modernization-workshop/app
+docker-compose build modernization-workshop
 
-docker tag modernization-devsecops-workshop_unicornstore:latest $(aws ecr describe-repositories --repository-name modernization-devsecops-workshop --query=repositories[0].repositoryUri --output=text):latest
+docker tag modernization-workshop:latest $(aws ecr describe-repositories --repository-name modernization-workshop --query=repositories[0].repositoryUri --output=text):latest
 
 
 eval $(aws ecr get-login --no-include-email)
-docker push $(aws ecr describe-repositories --repository-name modernization-devsecops-workshop --query=repositories[0].repositoryUri --output=text):latest
+docker push $(aws ecr describe-repositories --repository-name modernization-workshop --query=repositories[0].repositoryUri --output=text):latest
 ```
 
 If you watch the screen you should see the docker image build process animating the terminal
@@ -52,7 +52,7 @@ If successfully, you should see the message as below.
 {{% /notice %}}
 
 <pre>
-The push refers to repository [1234567891011.dkr.ecr.us-west-2.amazonaws.com/modernization-unicorn-store]
+The push refers to repository [1234567891011.dkr.ecr.us-west-2.amazonaws.com/modernization-workshop]
 8d2f7b95f78d: Pushed 
 82852e5eaa9d: Pushed 
 9df07df94e41: Pushed 

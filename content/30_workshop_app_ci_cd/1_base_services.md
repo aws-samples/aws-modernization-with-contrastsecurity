@@ -27,9 +27,6 @@ until [[ `aws cloudformation describe-stacks --stack-name "WorkshopServices" --q
 
 The output should look like the window below
 <pre>
-The stack is NOT in a state of CREATE_COMPLETE at Sun Aug  4 05:09:55 UTC 2019
-The stack is NOT in a state of CREATE_COMPLETE at Sun Aug  4 05:10:26 UTC 2019
-The stack is NOT in a state of CREATE_COMPLETE at Sun Aug  4 05:10:56 UTC 2019
-The Stack is built at Sun Aug  4 05:11:27 UTC 2019 - Please proceed
-xxxyyy_user:~/environment/modernization-devsecops-workshop/cfn (master) $ 
+The stack is NOT in a state of CREATE_COMPLETE at Sun Sep  8 05:53:33 UTC 2019
+The Stack is built at Sun Sep  8 05:54:04 UTC 2019 - Please proceed 
 </pre>
