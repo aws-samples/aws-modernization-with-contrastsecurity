@@ -4,3 +4,6 @@
 [submodule "themes/learn"]
 	path = themes/learn
 	url = https://github.com/jamesbland123/hugo-theme-learn.git
+[submodule "java-app"]
+	path = java-app
+	url = https://github.com/jamesbland123/java-petstore-app.git
