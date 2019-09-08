@@ -190,7 +190,7 @@ Resources:
       Port: 8080
       Protocol: HTTP
       HealthCheckIntervalSeconds: 10
-      HealthCheckPath: /health
+      HealthCheckPath: /
       HealthCheckProtocol: HTTP
       TargetType: ip
           
