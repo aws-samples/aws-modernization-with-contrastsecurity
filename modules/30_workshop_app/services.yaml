@@ -9,7 +9,7 @@ Resources:
       RepositoryName: modernization-workshop
       RepositoryDescription: Modernization Workshop CodeCommit Repo
   
-  UnicornStoreECR:
+  WorkshopECR:
     Type: "AWS::ECR::Repository"
     Properties:
       RepositoryName : modernization-workshop
@@ -19,5 +19,5 @@ Outputs:
     Description: URL for code commit repo
     Value: !GetAtt CodeRepo.CloneUrlHttp
     Export:
-      Name: WorkShopServices:CodeRepoURL
+      Name: WorkshopServices:CodeRepoURL
   

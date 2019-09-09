@@ -34,6 +34,7 @@ A mature CI/CD practice has the option of implementing continuous deployment whe
 
 To deploy the pipeline, run the following commands in Cloud9's terminal 
 ```bash
+cd ~/environment/modernization-workshop/modules/30_workshop_app
 aws cloudformation create-stack --stack-name WorkshopPipeline --template-body file://pipeline.yaml --capabilities CAPABILITY_NAMED_IAM
 
 until [[ `aws cloudformation describe-stacks --stack-name "WorkshopPipeline" --query "Stacks[0].[StackStatus]" --output text` == "CREATE_COMPLETE" ]]; do  echo "The stack is NOT in a state of CREATE_COMPLETE at `date`";   sleep 30; done && echo "The Stack is built at `date` - Please proceed"
