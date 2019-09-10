@@ -8,7 +8,7 @@ weight = 5
 
 A pipeline models our workflow from end to end. Within our pipeline we can have stages, and you can think of stages as groups of actions. An action or a plug-in is what acts upon the current revision that is moving through your pipeline. This is where the actual work happens in your pipeline. Stages can then be connected by transitions and in our console we represent these by an arrow between each stage. Our pipeline will consist of *three* stages:
 
-![CICD](/images/pipeline-view2.png)
+![CICD](/images/pipeline-view.png)
 
 The *Source* stage monitors for changes to our source code repository. When a change is made, we will transition to the following stage. In this case, our *Build* stage. Here we will use CodeBuild to run various tests within our pipeline. The process will check for various security issues and fail the build if any are found. These various phases are defined within our *BuildSpec* which will be found in the *buildspec.yml* in the source code directory. A sample of this file is below:
 
@@ -18,24 +18,31 @@ phases:
   install:
     runtime-versions:
       docker: 18
+      python: 3.7
+      ruby: 2.6
   pre_build:
     commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - REPOSITORY_URI=$(aws ecr describe-repositories --repository-name modernization-workshop --query=repositories[0].repositoryUri --output=text)
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - PWD=$(pwd)   
       - echo Setting CodeCommit Credentials
       - git config --global credential.helper '!aws codecommit credential-helper $@'
       - git config --global credential.UseHttpPath true
-      - echo Installing TruffleHog
-      - pip install TruffleHog
+      - git init
+      - git remote add origin https://git-codecommit.us-west-2.amazonaws.com/v1/repos/modernization-workshop
+      - git fetch
+      - git checkout -f "$CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - git submodule init
+      - git submodule update --recursive            
   build:
     commands:
-      - echo Running TruffleHog Secrets Scan
-      - trufflehog --regex --max_depth 1 $APP_SOURCE_REPO_URL
-      - echo Scanning with Hadolint
-      - docker run --rm -i hadolint/hadolint < Dockerfile
       - echo Build started on `date`
       - echo Building the Docker image...
+      - cd java-app
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
@@ -45,7 +52,8 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"modernization-unicorn-store_unicornstore","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - echo Source DIR ${CODEBUILD_SRC_DIR}
+      - printf '[{"name":"modernization-workshop","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > ${CODEBUILD_SRC_DIR}/imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
 </pre>

@@ -1,7 +1,7 @@
 +++
 title = "Local Testing"
 chapter = false
-weight = 30
+weight = 20
 +++
 
 Each of the different tests that we have instrumented in our pipeline so far can also be run on the developers local machine.  It is not uncommon in pratice to run tests on both the local development machine and within the pipeline.  The pipeline test is meant as a mechanism to fail a build stage that has not passed testing, while the local development environment test is meant to provide immediate feedback and diagnostic details to the developer.   
@@ -11,11 +11,11 @@ Let's go ahead and run the secret scans on our Cloud9 local development environm
 
 First we need to install TruffleHog
 ```bash
-cd ~/environment/modernization-devsecops-workshop/
+cd ~/environment/modernization-workshop/
 sudo pip install TruffleHog
 ```
 
-Create a new file in the ~/environment/modernization-devsecops-workshop called secrets.txt, paste in the string below and save the file.
+Create a new file in the ~/environment/modernization-workshop called secrets.txt, paste in the string below and save the file.
 ```bash
 dbpassword=tSQ9jz7BqjXxNkYFvA0QNuMKtp8
 ```
@@ -45,7 +45,7 @@ This tool is very easy to run in our Cloud9 environment as it runs using Docker,
 
 To run hadolint copy and paste the following into the Cloud9 terminal
 ```bash
-cd ~/environment/modernization-devsecops-workshop/
+cd ~/environment/modernization-workshop/app
 docker run --rm -i hadolint/hadolint < Dockerfile
 ```
 
@@ -73,7 +73,7 @@ We ran each of the commands manually, but normally you would want to add this as
 
 As an example, run the following command
 ```bash
-cd ~/environment/modernization-devsecops-workshop/
+cd ~/environment/modernization-workshop/tests
 ./test_runner.sh
 ```
 

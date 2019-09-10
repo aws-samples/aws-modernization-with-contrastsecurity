@@ -1,9 +1,9 @@
 +++
-title = "Workshop App with CI/CD"
+title = "Build and Deploy Sample App with CI/CD"
 chapter = true
 weight = 30
 +++
 
-# Workshop App with CI/CD
+# Build and Deploy Sample App with CI/CD
 
 {{% children showhidden="false" %}}

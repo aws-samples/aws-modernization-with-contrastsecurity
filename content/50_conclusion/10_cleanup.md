@@ -13,22 +13,29 @@ You will need to manually delete some resources before you delete the CloudForma
 
 ```bash
 # Delete S3 Bucket
-aws s3 rm s3://$(aws s3api list-buckets --query 'Buckets[?starts_with(Name, `unicornpipeline-artifactbucket`) == `true` ].Name' --output text) --recursive
+aws s3 rm s3://$(aws s3api list-buckets --query 'Buckets[?starts_with(Name, `workshoppipeline-artifactbucket`) == `true` ].Name' --output text) --recursive
 
 # Delete Log Group
-aws logs delete-log-group --log-group-name UnicornStore
+aws logs delete-log-group --log-group-name ModernizationWorkshop
 
 # Delete ECR Repository
-aws ecr delete-repository --repository-name modernization-devsecops-workshop --force
+aws ecr delete-repository --repository-name modernization-workshop --force
 
-# Delete CloudFormation Stacks
-aws cloudformation delete-stack --stack-name UnicornPipeline
-aws cloudformation delete-stack --stack-name UnicornECS
-aws cloudformation delete-stack --stack-name UnicornStoreServices
-aws cloudformation delete-stack --stack-name UnicornDevSecOpsWorkshop
-
-echo 'Completed cleanup.'
+# Delete CloudFormation Pipeline and ECS Stacks
+aws cloudformation delete-stack --stack-name WorkshopPipeline
+aws cloudformation delete-stack --stack-name WorkshopECS
 ```
+
+Now remove the WorkshopServices stack
+```bash
+aws cloudformation delete-stack --stack-name WorkshopServices
+```
+
+Finally, close the cloud9 window and manually verify deletion of previous stacks and delete the final stack.  In the AWS console, go to CloudFormation.  Ensure **WorkshopPipeline, WorkshopECS, and WorkshopServices** have all been removed.  Once verified, click `ModernizationWorkshop` stack and then `Delete`
+
+Verify that none of the Workshop* stacks are listed in CloudFormation and you are done.
+
+
 
 
 

@@ -10,7 +10,7 @@ echo "##### TruffleHog Test #####"
 trufflehog --regex --max_depth 1 .
 
 echo "##### hadolint Dockerfile #####"
-docker run --rm -i hadolint/hadolint < Dockerfile
+docker run --rm -i hadolint/hadolint < app/Dockerfile
 
 
 
