@@ -16,7 +16,7 @@ Parameters:
   GitHubRepo:
     Type: String
     Description: repo name
-    Default: aws-modernization-devsecops
+    Default: aws-modernization-with-contrastsecurity
   FullRepoURL:
     Type: String
     Description: The full url to the repo
