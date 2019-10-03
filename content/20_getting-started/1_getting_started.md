@@ -33,7 +33,7 @@ Now we want to clone the repository that contains all the content and files you 
 
 ```bash
 cd ~/environment && \
-git clone https://github.com/jamesbland123/workshop-sample modernization-workshop
+git clone https://github.com/aws-samples/aws-modernization-with-contrastsecurity modernization-workshop
 cd modernization-workshop
 git submodule init
 git submodule update

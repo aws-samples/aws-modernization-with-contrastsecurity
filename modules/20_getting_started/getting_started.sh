@@ -19,6 +19,7 @@ echo "##### Link app to java-app #####"
 cd ~/environment/modernization-workshop
 ln -s java-app app
 
-
+echo "##### Install PyYAML #####"
+sudo pip-3.6 install PyYAML
 
 
