@@ -14,6 +14,8 @@ cd ~/environment/modernization-workshop/
 git remote set-url origin https://git-codecommit.us-west-2.amazonaws.com/v1/repos/modernization-workshop
 git config --global credential.helper '!aws codecommit credential-helper $@'
 git config --global credential.UseHttpPath true
+git add app
+git commit -m "Adding app symbolic link"
 git push origin master
 ```
 
