@@ -1,0 +1,283 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: This template will launch an ECS service (Fargate) for the Modernization Workshop.
+
+Parameters:
+  VPCstack:
+    Type: String
+    Description: VPC stack to import values from
+    Default: ModernizationVPC
+
+  DesiredCount:
+    Type: Number
+    Default: 1    
+
+  ContrastURL:
+    Type: String
+    Description: TeamServer URL to use for connection. Defaults to Community Edition.
+    Default: https://ce.contrastsecurity.com/Contrast
+  ContrastApiKey:
+    Type: String
+    NoEcho: true
+    Description: Set the API key needed to communicate with the Contrast UI. This sets an environment variable in the Task Definition.
+
+  ContrastServiceKey:
+    Type: String
+    NoEcho: true
+    Description: Set the service key needed to communicate with the Contrast UI. This sets an environment variable in the Task Definition.
+
+  ContrastUserName:
+    Type: String
+    NoEcho: true
+    Description: Set the user name used to communicate with the Contrast UI. This sets an environment variable in the Task Definition.
+
+Resources:
+  ContrastApiKeySecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: Contrast API Key
+      Name: ContrastApiKeySecret
+      SecretString: 
+        Ref: ContrastApiKey
+
+  ContrastServiceKeySecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: Contrast Service Key
+      Name: ContrastServiceKeySecret
+      SecretString: 
+        Ref: ContrastServiceKey
+
+  ContrastUserNameSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: Contrast User Name
+      Name: ContrastUserNameSecret
+      SecretString: 
+        Ref: ContrastUserName
+
+  ContrastSecretsManagerPolicy:
+    Type: AWS::IAM::Policy
+    Properties: 
+      PolicyName: ContrastSecretsManagerPolicy
+      Roles:
+      - FargateExecutionRole
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+            - secretsmanager:GetSecretValue
+            Resource:
+            - Ref: ContrastApiKeySecret
+            - Ref: ContrastServiceKeySecret
+            - Ref: ContrastUserNameSecret
+
+  CloudwatchLogGroup:
+    Type: "AWS::Logs::LogGroup"
+    Properties:
+      LogGroupName: ModernizationWorkshop
+      RetentionInDays: 30      
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: ModernizationCluster
+
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement: 
+          - Action: "sts:AssumeRole"
+            Effect: "Allow"
+            Principal: 
+              Service: "ecs-tasks.amazonaws.com"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+        - "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+        - "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"      
+        - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+      RoleName: "FargateExecutionRole"
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties: 
+      Family: modernization-workshop
+      Cpu: 1024
+      Memory: 2048
+      NetworkMode: awsvpc
+      ExecutionRoleArn:
+        Ref: TaskExecutionRole
+      TaskRoleArn: FargateExecutionRole
+      RequiresCompatibilities: 
+        - "FARGATE"
+      ContainerDefinitions: 
+        - Name: modernization-workshop
+          Image:
+            Fn::Sub: '${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/modernization-workshop:latest'
+          Cpu: 1024
+          Memory: 2048
+          Environment:
+            - Name: CONTRAST_URL
+              Value:
+                Ref: ContrastURL
+          Secrets:
+            - Name: CONTRAST_API_KEY
+              ValueFrom: 
+                Ref: ContrastApiKeySecret
+            - Name: CONTRAST_SERVICE_KEY
+              ValueFrom: 
+                Ref: ContrastServiceKeySecret
+            - Name: CONTRAST_USER_NAME
+              ValueFrom: 
+                Ref: ContrastUserNameSecret
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-group:
+                Ref: CloudwatchLogGroup
+              awslogs-stream-prefix: "web"     
+          MemoryReservation: 2048
+          PortMappings: 
+            - ContainerPort: 80
+              HostPort: 80
+              Protocol: tcp
+
+  TaskSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupName: ModernSecurityGroup
+      GroupDescription: Security group the the Modern Fargate Task
+      VpcId: 
+        Fn::ImportValue: 
+          Fn::Sub: ${VPCstack}:VPCId
+  
+  TaskSecurityGroupIngress:
+    Type: "AWS::EC2::SecurityGroupIngress"
+    Properties:
+      GroupId:
+        Ref: TaskSecurityGroup
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+      SourceSecurityGroupId:
+        Ref: LBSecurityGroup     
+
+  FargateService:
+    Type: AWS::ECS::Service
+    DependsOn: LoadBalancerListener
+    Properties:
+      Cluster:
+        Ref: ECSCluster
+      DesiredCount:
+        Ref: DesiredCount
+      TaskDefinition: 
+        Ref: TaskDefinition
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - Ref: TaskSecurityGroup
+          Subnets: 
+            - Fn::ImportValue:
+                Fn::Sub: ${VPCstack}:PublicSubnet1
+            - Fn::ImportValue:
+                Fn::Sub: ${VPCstack}:PublicSubnet2
+      LoadBalancers:
+        - ContainerName: modernization-workshop
+          ContainerPort: 80
+          TargetGroupArn: 
+            Ref: TargetGroup
+      ServiceName: ModernService
+      
+  LBSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupName: LbSecurityGroup
+      GroupDescription: Security group the the Modernization Workshop Application Load Balancer
+      SecurityGroupEgress:
+        - CidrIp: "0.0.0.0/0"
+          IpProtocol: TCP
+          FromPort: 80
+          ToPort: 80
+      SecurityGroupIngress:
+        - CidrIp: "0.0.0.0/0"
+          IpProtocol: TCP
+          FromPort: 80
+          ToPort: 80
+      VpcId: 
+        Fn::ImportValue: 
+          Fn::Sub: "${VPCstack}:VPCId"
+
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: Modernization-Workshop-LB
+      Scheme: internet-facing
+      SecurityGroups:
+        - Ref: LBSecurityGroup
+      Subnets:
+        - Fn::ImportValue:
+            Fn::Sub: "${VPCstack}:PublicSubnet1"
+        - Fn::ImportValue:
+            Fn::Sub: "${VPCstack}:PublicSubnet2"
+      Tags:
+        - Key: Name
+          Value: Modernization-Workshop-LB
+      Type: application
+      IpAddressType: ipv4
+
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: TargetGroup
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    DependsOn: LoadBalancer
+    Properties:
+      Name: ecs-modernization-service
+      VpcId: 
+        Fn::ImportValue:
+          Fn::Sub: "${VPCstack}:VPCId"
+      Port: 80
+      Protocol: HTTP
+      HealthCheckEnabled: true
+      HealthCheckIntervalSeconds: 35
+      HealthCheckPath: /WebGoat/login.mvc
+      HealthCheckPort: 80
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 30
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 10
+      TargetType: ip
+      Matcher:
+        HttpCode: 200-299
+          
+Outputs:
+  Service:
+    Value:
+        Ref: FargateService
+  
+  TargetGroup:
+    Value:
+        Ref: TargetGroup
+
+  ServiceUrl:
+    Description: URL of the load balancer for the sample service.
+    Value:
+      Fn::Sub: http://${LoadBalancer.DNSName}/WebGoat
+    
+      
+  
