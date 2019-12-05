@@ -1,9 +1,9 @@
 +++
-title = "Setup AWS CodePipeline and Amazon ECR"
+title = "Setup AWS CodeCommit and Amazon ECR"
 chapter = true
 weight = 30
 +++
 
-# Setup Web Goat App and Pipeline
+# Setup AWS CodeCommit and Amazon ECR
 
 {{% children showhidden="false" %}}
