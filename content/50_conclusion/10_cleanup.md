@@ -12,9 +12,6 @@ You will need to manually delete some resources before you delete the CloudForma
 {{% /notice %}}
 
 ```bash
-# Delete S3 Bucket
-aws s3 rm s3://$(aws s3api list-buckets --query 'Buckets[?starts_with(Name, `workshoppipeline-artifactbucket`) == `true` ].Name' --output text) --recursive
-
 # Delete Log Group
 aws logs delete-log-group --log-group-name ModernizationWorkshop
 
