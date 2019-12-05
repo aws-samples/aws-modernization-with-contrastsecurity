@@ -1,9 +1,9 @@
 +++
-title = "Build and Deploy Sample App with CI/CD"
+title = "Setup AWS CodePipeline and Amazon ECR"
 chapter = true
 weight = 30
 +++
 
-# Build and Deploy Sample App with CI/CD
+# Setup Web Goat App and Pipeline
 
 {{% children showhidden="false" %}}

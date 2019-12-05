@@ -22,7 +22,6 @@ aws logs delete-log-group --log-group-name ModernizationWorkshop
 aws ecr delete-repository --repository-name modernization-workshop --force
 
 # Delete CloudFormation Pipeline and ECS Stacks
-aws cloudformation delete-stack --stack-name WorkshopPipeline
 aws cloudformation delete-stack --stack-name WorkshopECS
 ```
 

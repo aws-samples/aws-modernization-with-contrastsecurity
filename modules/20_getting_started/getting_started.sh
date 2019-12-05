@@ -15,10 +15,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 echo "##### Install jq #####"
 sudo yum -y install jq
 
-echo "##### Link app to java-app #####"
-cd ~/environment/modernization-workshop
-ln -s java-app app
-
 echo "##### Install PyYAML #####"
 sudo pip-3.6 install PyYAML
 

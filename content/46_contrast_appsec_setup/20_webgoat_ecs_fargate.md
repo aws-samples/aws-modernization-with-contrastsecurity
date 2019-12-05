@@ -35,14 +35,9 @@ latest: digest: sha256:4229b5fe142f6d321ef2ce16ff22070e410272ee140e7eec51540a823
 </pre>
 
 ### Deploy WebGoat to Fargate Service
-Now we are going to delete the existing ECS Fargate CloudFormation stack so we can deploy a new stack with WebGoat, a purposely vulnerable web application, instrumented with Contrast Security. We will use the rest of the existing insfrastructuree, such as the pipeline.
+Now we are going to deploy a new stack with WebGoat, a purposely vulnerable web application, instrumented with Contrast Security. 
 
-Let's delete the current ECS stack.
-```bash
-aws cloudformation delete-stack --stack-name WorkshopECS
-```
-
-Then create the new stack.
+Create the new stack.
 ```bash
 cd ~/environment/modernization-workshop/modules/40_contrast_security
 aws cloudformation create-stack --stack-name WorkshopECS --template-body file://webgoat-ecs-fargate.yaml --parameters file://ecs-parameters.json --capabilities CAPABILITY_NAMED_IAM
@@ -72,13 +67,3 @@ echo http://$(aws elbv2 describe-load-balancers --names="Modernization-Workshop-
 
 ![WebGoat UI](/images/contrast/wg_0.png)
 
-### Push WebGoat to Pipeline
-We already have the pipeline setup that triggers off of changes ot the repository. To deploy WebGoat within the pipeline, all you need to do is run the following commands in Cloud9's terminal.
-
-```bash
-cd ~/environment/modernization-workshop
-echo 'contrast_security.yaml' >> .gitignore && echo 'ecs-parameters.json' >> .gitignore
-git add .
-git commit -m "Changed pipeline to build WebGoat"
-git push origin master
-```

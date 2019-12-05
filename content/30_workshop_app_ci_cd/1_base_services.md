@@ -6,7 +6,7 @@ weight = 1
 
 ### Introduction
 
-Up until now, we have been going through various steps to setup our environment. Installing tools and other necessary steps to make sure we progress through the modules without any issues. Now, we are ready to begin deploying the infrastructure that will support our Unicorn Store application. 
+Up until now, we have been going through various steps to setup our environment. Installing tools and other necessary steps to make sure we progress through the modules without any issues. Now, we are ready to begin deploying the infrastructure that will support our application. 
 
 ### Basic Services CloudFormation Stack
 
