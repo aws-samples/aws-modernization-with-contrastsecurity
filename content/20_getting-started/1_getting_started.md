@@ -18,7 +18,7 @@ In order for you to succeed in this workshop, you will need to run through a few
 
    [Click here to deploy using CloudFormation template](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=ModernizationWorkshop&templateURL=https://modernization-workshop-west-2.s3-us-west-2.amazonaws.com/devops/cfn/modernization-workshop.yaml)
 
-   - Create stack click, **Next**
+   - Create stack, click **Next**
    - Specify stack details, click **Next**
    - Configure stack options, click **Next**
    - Review UnicornDevSecOpsWorkshop, scroll to bottom section under **Capabilities** and check both boxes and click **Create stack** 

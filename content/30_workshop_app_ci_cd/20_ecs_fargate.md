@@ -15,7 +15,7 @@ until [[ `aws cloudformation describe-stacks --stack-name "WorkshopECS" --query 
 ```
 
 {{% notice info %}}
-This step takes approximately 3 minutes and if successfully, you should see the message as below.
+This step takes approximately 3 minutes and if successful, you should see the message as below.
 {{% /notice %}}
 
 <pre>
