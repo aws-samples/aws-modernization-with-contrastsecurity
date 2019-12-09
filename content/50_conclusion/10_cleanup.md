@@ -27,7 +27,7 @@ Now remove the WorkshopServices stack
 aws cloudformation delete-stack --stack-name WorkshopServices
 ```
 
-Finally, close the cloud9 window and manually verify deletion of previous stacks and delete the final stack.  In the AWS console, go to CloudFormation.  Ensure **WorkshopPipeline, WorkshopECS, and WorkshopServices** have all been removed.  Once verified, click `ModernizationWorkshop` stack and then `Delete`
+Finally, close the cloud9 window and manually verify deletion of previous stacks and delete the final stack.  In the AWS console, go to [CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks?filteringText=&filteringStatus=active&viewNested=true&hideStacks=false).  Ensure **WorkshopPipeline, WorkshopECS, and WorkshopServices** have all been removed.  Once verified, click `ModernizationWorkshop` stack and then `Delete`
 
 Verify that none of the Workshop* stacks are listed in CloudFormation and you are done.
 
