@@ -6,7 +6,7 @@ weight = 20
 
 Contrast Security's Community Edition (CE) is a free version of the Contrast application security platform for Java applications and APIs.
 
-1. If you don't have a Contrast CE account, [create one now](https://www.contrastsecurity.com/community-edition-lp-website)
+1. If you don't have a Contrast CE account, [create one now](https://www.contrastsecurity.com/community-edition-lp-website).  If you do have one, remember that CE accounts only allow one application, so you may need to create another one.
 
 2. After logging in, click the `+Add Agent` button in the top right:
 {{< figure src="/images/contrast/ce_1.png" style="border: 1px solid #000; max-width:auto; max-height:auto;">}}

@@ -13,7 +13,7 @@ If you already have an AWS account, and have IAM Administrator access, you can s
 {{% /notice %}}
 
 1. If you don't already have an AWS account with Administrator access: [create
-one now](http://docs.aws.amazon.com/connect/latest/adminguide/gettingstarted.html#sign-up-for-aws)
+one now](https://portal.aws.amazon.com/billing/signup#/start)
 
 2. Once you have an AWS account, ensure you are following the remaining workshop steps
 as an **IAM user** with administrator access to the AWS account:

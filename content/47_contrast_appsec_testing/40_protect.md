@@ -5,9 +5,9 @@ weight = 40
 +++
 
 ### Protecting Your Application in Production
-The same technology used to find vulnerabilities early within the SDLC can also be extended int applications running in production environments. If enabled within these environments, attacks against the application layer can be monitored and blocked by Contrast.
+The same technology used to find vulnerabilities early within the SDLC can also be extended into applications running in production environments. If enabled within these environments, attacks against the application layer can be monitored and blocked by Contrast.
 
-In your Community Edition, this feature is already enabled by default. You can see this by navigating to the `Policy` submenu within the WebGoat application:
+In your Community Edition, this feature is already enabled by default. You can see this by navigating to the `Policy` submenu within the WebGoat application and clicking on the Protect button within it:
 
 {{< figure src="/images/contrast/ce_5.png" style="border: 1px solid #000; max-width:auto; max-height:auto;">}}
 

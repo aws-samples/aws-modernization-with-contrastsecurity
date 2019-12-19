@@ -14,7 +14,7 @@ You can view an inventory of libraries being used by the application by clicking
 This information is also available via the API using credentials available from `Your Account` page, available from the dropdown on the upper-right hand corner of the Contrast UI next to your user name.
 
 ```bash
-curl -X GET https://ce.contrastsecurity.com/Contrast/api/ng/{orgUuid}/libraries -H 'Authorization:{authorization-key}' -H 'API-Key:{API-Key}'
+curl -X GET https://ce.contrastsecurity.com/Contrast/api/ng/{orgUuid}/libraries -H 'Authorization:{authorization-header}' -H 'API-Key:{API-Key}'
 ```
 
 The output should look something like this:
