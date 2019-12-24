@@ -4,7 +4,7 @@ chapter = false
 weight = 10
 +++
 
-### Setup Environment for WebGoat
+### Set up Environment for WebGoat
 We will now setup the environment for the Contrast Security module.
 
 Copy the files from the `~/environment/modernization-workshop/modules/40_contrast_security/root_files` to the `~/environment/modernization-workshop` root directory.

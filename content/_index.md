@@ -21,7 +21,7 @@ weight: 1
 - Setup of a Cloud9 environment
 - Usage of AWS CloudFormation to automate the deployment of infrastructure
 - Deployment of Amazon Elastic Container Service
-- Deploy and use a modenized pipeline using AWS CodePipeline, CodeCommit, and CodeBuild 
+- Deploy and use a modernized pipeline using AWS CodePipeline, CodeCommit, and CodeBuild 
 - Instrument a couple of security testing/scanning tools
 
 ### Sample reference architecture

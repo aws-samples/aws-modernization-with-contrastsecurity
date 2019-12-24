@@ -5,7 +5,7 @@ weight = 20
 +++
 
 ### Build and push WebGoat
-Now we will build WebGoat, a purposely vulnerable web application, using the Dockerfile we copied into the `modernization-workshop` root directory, tag it and push it to ECR.
+Now we will build WebGoat, a purposely vulnerable web application, using the Dockerfile we copied into the `modernization-workshop` root directory, tag it and push it to ECR.  Note that the `docker build` step can take 10 minutes or more.
 
 ```bash
 cd ~/environment/modernization-workshop
@@ -21,7 +21,7 @@ docker push $(aws ecr describe-repositories --repository-name modernization-work
 If you watch the screen you should see the docker image build process animating the terminal
 
 {{% notice info %}}
-If successfully, you should see the message as below.
+If successful, you should see the message as below.
 {{% /notice %}}
 
 <pre>
